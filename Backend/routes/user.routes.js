@@ -1,7 +1,7 @@
 import express from "express";
 // for req validation 
 import {body} from "express-validator"
-import { getUserProfile, loginUser, registerUser } from "../controllers/user.controller.js";
+import { getUserProfile, loginUser, logoutUser, registerUser } from "../controllers/user.controller.js";
 import { authUser } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
@@ -23,5 +23,6 @@ router.post("/login", [
 
 // add middleware "authUser"
 router.get("/profile", authUser, getUserProfile)
+router.get("/logout", authUser, logoutUser)
 
 export default router;
