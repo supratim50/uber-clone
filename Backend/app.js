@@ -8,6 +8,7 @@ import connectToDB from './db/db.js';
 
 import userRoute from "./routes/user.routes.js";
 import cookieParser from 'cookie-parser';
+import captainRoutes from './routes/captain.routes.js';
 
 connectToDB();
 
@@ -23,5 +24,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRoute)
+app.use('/captains', captainRoutes)
 
 export default app;
