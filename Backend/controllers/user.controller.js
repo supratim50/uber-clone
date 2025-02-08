@@ -3,6 +3,7 @@ import { userModel } from "../models/user.model.js";
 import { createUser } from "../services/user.service.js";
 import { validationResult } from "express-validator";
 
+// register
 export const registerUser = async (req, res, next) => {
     const errors = validationResult(req);
 
@@ -31,7 +32,7 @@ export const registerUser = async (req, res, next) => {
     res.status(201).json({token, user});
 
 }
-
+// login
 export const loginUser = async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
@@ -59,11 +60,11 @@ export const loginUser = async (req, res, next) => {
 
     res.status(200).json({token, user});
 }
-
+// get profile
 export const getUserProfile = async (req, res, next) => {
     res.status(200).json(req.user);
 }
-
+// logout
 export const logoutUser = async (req, res, next) => {
     res.clearCookie('token');
     const token = req.cookies.token || req.headers.authorization.split(" ")[1];
