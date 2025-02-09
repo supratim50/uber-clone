@@ -1,33 +1,58 @@
-import React, { useState, useEffect } from 'react'
+import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { UserDataContext } from './context/UserContext';
 
 const UserrProtectedWrapper = ({children}) => {
     const navigate = useNavigate();
+    const {userData, setUserData} = useContext(UserDataContext);
 
     const [checking, setChecking] = useState(true);
+
+    const verifyToken = async (token) => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_DEV_BASE_URL}/user/profile`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if(response.status === 200) {
+                setUserData(response.data.user);
+                setChecking(false);
+            }
+        } catch (error) {
+            console.log(error.response.data.message)
+            setChecking(false);
+            navigate("/user/login")
+        }
+    }
 
     useEffect(() => {
         setChecking(true);
         const token = localStorage.getItem("userToken");
-        console.log("TOKEN", token)
+        
         if(token === null) {
             setChecking(false);
             navigate("/user/login");
         }
-        setChecking(false);
+
+        verifyToken(token);
     }, [navigate])
 
     if(checking) {
         return (
-            <div className='w-full h-screen felx justify-center items-center text-black'>
+            <div className='w-full h-screen flex justify-center items-center text-black'>
                 Checking...
             </div>
         )
-    } 
+    } else {
+        return (
+            <div>{children}</div>
+        )
+    }
         
-    return (
-        <div>{children}</div>
-    )
+    
 }
 
 export default UserrProtectedWrapper
