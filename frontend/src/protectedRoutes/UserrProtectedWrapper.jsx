@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { UserDataContext } from './context/UserContext';
+import { UserDataContext } from '../context/UserContext';
 
 const UserrProtectedWrapper = ({children}) => {
     const navigate = useNavigate();
@@ -18,7 +18,8 @@ const UserrProtectedWrapper = ({children}) => {
             });
 
             if(response.status === 200) {
-                setUserData(response.data.user);
+                console.log(response.data)
+                setUserData(response.data);
                 setChecking(false);
             }
         } catch (error) {
